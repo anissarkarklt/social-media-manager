@@ -6,6 +6,7 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm
 from .forms import CustomLoginForm
 from django.http import HttpResponse
+from django.db import connection  # Import connection
 # Create your views here.
 def dashboard(request):
     return render(request,'core/index.html')
@@ -27,21 +28,15 @@ def login_view(request):
     return render(request, 'core/login.html', {'loginForm': form})
 
 def register_view(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            auth_login(request, user)  # Use the imported alias
-            return redirect('dashboard')  # Ensure 'dashboard' is defined in your urls.py
-        else:
-            messages.error(request, "Please correct the errors below.")
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'core/register.html', {'registrationForm': form})
+    return render(request, 'core/register.html')
 def register_submit(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            return HttpResponse("T")
+            user = form.save()
+            # auth_login(request, user)  # Use the imported alias
+            return redirect('dashboard')  # Ensure 'dashboard' is defined in your urls.py
+            connection.close()
+            # return HttpResponse(form)
         else:
-            return HttpResponse("F")
+            return HttpResponse(f"Form Errors: {form.errors}")

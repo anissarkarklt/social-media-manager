@@ -92,12 +92,20 @@ WSGI_APPLICATION = 'social_manager.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-# Database configuration
+# Database Configuration with Fixes for SQLite Lock Issue
 DATABASES = {
     'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL', 'sqlite:///' + str(BASE_DIR / 'db.sqlite3'))
+        os.environ.get('DATABASE_URL', f'sqlite:///{BASE_DIR}/db.sqlite3')
     )
 }
+
+# Additional SQLite optimizations
+if DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3':
+    DATABASES['default']['OPTIONS'] = {
+        'timeout': 300,  # Increases timeout to avoid locked database errors
+    }
+
+DATABASES['default']['CONN_MAX_AGE'] = 0  # Forces connection to close after each request
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
