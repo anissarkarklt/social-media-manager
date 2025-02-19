@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-def welcome(request):
-    posts = 'welcome'
-    return render(request,'core/welcome.html',{'posts':posts})
+def dashboard(request):
+    return render(request,'core/index.html')
+def login(request):
+    return render(request,'core/login.html')
