@@ -7,6 +7,9 @@ from .forms import CustomUserCreationForm
 from .forms import CustomLoginForm
 from django.http import HttpResponse
 from django.db import connection  # Import connection
+from django.db import IntegrityError, transaction
+from django.contrib.auth.models import User
+
 # Create your views here.
 def dashboard(request):
     return render(request,'core/index.html')
@@ -32,11 +35,21 @@ def register_view(request):
 def register_submit(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
+        
         if form.is_valid():
-            user = form.save()
-            # auth_login(request, user)  # Use the imported alias
-            return redirect('dashboard')  # Ensure 'dashboard' is defined in your urls.py
-            connection.close()
-            # return HttpResponse(form)
+            username = form.cleaned_data.get('username')
+
+            try:
+                with transaction.atomic():  # Ensures data is committed properly
+                    if User.objects.filter(username=username).exists():
+                        return HttpResponse("Error: Username already exists!", status=400)
+
+                    user = form.save()  # Save the user only if it doesn't exist
+                    connection.close()  # Ensure DB connection is closed
+                    return redirect('dashboard')
+
+            except IntegrityError as e:
+                return HttpResponse(f"Database Error: {str(e)}", status=400)
+
         else:
-            return HttpResponse(f"Form Errors: {form.errors}")
+            return HttpResponse(f"Form Errors: {form.errors}", status=400)
