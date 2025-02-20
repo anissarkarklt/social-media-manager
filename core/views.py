@@ -30,26 +30,19 @@ def login_view(request):
     
     return render(request, 'core/login.html', {'loginForm': form})
 
+
 def register_view(request):
-    return render(request, 'core/register.html')
-def register_submit(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
-        
         if form.is_valid():
-            username = form.cleaned_data.get('username')
+            user = form.save()  # Save the user with all fields
+            auth_login(request, user)  # Log the user in
+            return redirect("dashboard")  # Redirect to a success page
+    else:
+        form = CustomUserCreationForm()
 
-            try:
-                with transaction.atomic():  # Ensures data is committed properly
-                    if User.objects.filter(username=username).exists():
-                        return HttpResponse("Error: Username already exists!", status=400)
+    return render(request, "core/register.html", {"form": form})
 
-                    user = form.save()  # Save the user only if it doesn't exist
-                    connection.close()  # Ensure DB connection is closed
-                    return redirect('dashboard')
-
-            except IntegrityError as e:
-                return HttpResponse(f"Database Error: {str(e)}", status=400)
-
-        else:
-            return HttpResponse(f"Form Errors: {form.errors}", status=400)
+def register_submit(request):
+    # This handles the form submission from your template
+    return register_view(request)
