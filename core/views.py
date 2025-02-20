@@ -9,11 +9,15 @@ from django.http import HttpResponse
 from django.db import connection  # Import connection
 from django.db import IntegrityError, transaction
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
+@login_required
 # Create your views here.
 def dashboard(request):
     return render(request,'core/index.html')
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     if request.method == 'POST':
         form = CustomLoginForm(request.POST)
         if form.is_valid():
@@ -33,6 +37,8 @@ def login_view(request):
 
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():

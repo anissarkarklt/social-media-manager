@@ -124,7 +124,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+LOGIN_URL = '/'  # Redirect to login page if not authenticated
+LOGIN_REDIRECT_URL = '/dashboard/'  # Redirect after successful login
+LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
