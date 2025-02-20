@@ -104,3 +104,14 @@ document.querySelectorAll(".toggle-password").forEach(function (eyeIcon) {
         }
     });
 });
+document.addEventListener("DOMContentLoaded", function() {
+        let tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+        let titleElement = document.querySelector('.platform-tab-title');
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function(event) {
+                let tabName = event.target.innerText.trim(); // Get the tab name
+                titleElement.textContent = tabName; // Update title text
+               // console.log("Active Tab:", tabName);
+            });
+        });
+    });

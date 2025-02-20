@@ -18,38 +18,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/linearicons/1.0.0/icon-font.min.css">
     <link href="{% static 'main.css' %}" rel="stylesheet">
     <link href="{% static 'styles.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     
     
 
 </head>
 <body>
-    {% if request.user.is_authenticated %}
-        <!-- Simple layout for Register and Home -->
-        <!-- Full Layout for other pages -->
-        <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">  
-            {% include 'core/header.html' %}     
-            <div class="app-main">
-                {% include 'core/sidebar.html' %}    
-                <div class="app-main__outer">
-                    <div class="app-main__inner">
-    {% else %}
-
-       
-                    
-    {% endif %}
-    {% block content %}{% endblock %}
-    {% if request.user.is_authenticated %}
-    </div>
-                    {% include 'core/footer.html' %}
-                </div>  
-            </div>
-        </div>
-   {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">    
+                            {% include 'core/header.html' %}     
+                            <div class="app-main">
+                                {% include 'core/sidebar.html' %}    
+                                <div class="app-main__outer">
+                                    <div class="app-main__inner">
+                    {% endif %}
+                    {% block content %}{% endblock %}
+                    {% if request.user.is_authenticated %}
+                                    </div>
+                                    {% include 'core/footer.html' %}
+                                </div>  
+                            </div>
+                        </div>
+                    {% endif %}
 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="{% static '/assets/scripts/main.js' %}"></script>
 
 

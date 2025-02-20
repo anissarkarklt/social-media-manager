@@ -15,6 +15,11 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def dashboard(request):
     return render(request,'core/index.html')
+
+@login_required
+def manage_media(request, platform):
+    return render(request,'core/manage-media.html', {'platform': platform})
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')

@@ -16,6 +16,19 @@
                                 <span>Create an account and <span class="text-success">take control</span> of your social presence effortlessly.</span>
                             </h4>
                             <div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        {% if form.errors %}
+                                            <div class="alert alert-warning">
+                                                {% for field, errors in form.errors.items %}
+                                                    {% for error in errors %}
+                                                        <h5>{{ error }}</h5>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                                 <form method="post" action="{% url 'login' %}">
                                     {% csrf_token %}
                                     <div class="form-row">
@@ -67,7 +80,7 @@
                                                 {% endfor %}
                                             </div>
                                         </div>
-                                
+                                        
                                         <!-- Submit Button -->
                                         <div class="col-md-12">
                                             <div class="mt-4 d-flex align-items-center">

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
@@ -64,3 +65,26 @@ class CustomLoginForm(forms.Form):
         required=True,
         label="Accept our Terms and Conditions",
     )
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email:
+            try:
+                user = User.objects.get(email=email)  # Get user by email
+            except User.DoesNotExist:
+                raise ValidationError("User does not exist.")
+        return email
+    def clean_password(self):
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+
+        if email and password:
+            try:
+                user = User.objects.get(email=email)  # Get user by email
+            except User.DoesNotExist:
+                raise ValidationError("User does not exist.")  # Error if email is not found
+
+            authenticated_user = authenticate(username=user.username, password=password)
+            if authenticated_user is None:
+                raise ValidationError("Incorrect password.")  # Error if password is wrong
+
+        return password
