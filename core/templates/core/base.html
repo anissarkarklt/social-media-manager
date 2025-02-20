@@ -25,7 +25,7 @@
 
 </head>
 <body>
-   {% if 'register' not in request.path and request.path != '/' %}
+    {% if request.user.is_authenticated %}
         <!-- Simple layout for Register and Home -->
         <!-- Full Layout for other pages -->
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">  
@@ -40,7 +40,7 @@
                     
     {% endif %}
     {% block content %}{% endblock %}
-{% if 'register' not in request.path and request.path != '/' %}
+    {% if request.user.is_authenticated %}
     </div>
                     {% include 'core/footer.html' %}
                 </div>  

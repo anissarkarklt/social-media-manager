@@ -17,18 +17,19 @@ def login_view(request):
     if request.method == 'POST':
         form = CustomLoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
+            
             if user is not None:
                 auth_login(request, user)
-                return redirect('login')  # Replace 'home' with your desired URL name
+                return redirect('dashboard')  # Replace 'home' with your desired URL name
             else:
                 messages.error(request, 'Invalid username or password.')
     else:
         form = CustomLoginForm()
     
-    return render(request, 'core/login.html', {'loginForm': form})
+    return render(request, 'core/login.html', {"form": form })
 
 
 def register_view(request):

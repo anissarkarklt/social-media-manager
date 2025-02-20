@@ -51,10 +51,16 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
         return user
 class CustomLoginForm(forms.Form):
-    username = forms.CharField(
-        max_length=150,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'})
+    email = forms.EmailField(
+        required=True,
+        label="Email",
+        widget=forms.EmailInput(attrs={"placeholder": "Email here..."}),
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
+        label="Password",
+        widget=forms.PasswordInput(attrs={"placeholder": "Password here..."}),
+    )
+    terms = forms.BooleanField(
+        required=True,
+        label="Accept our Terms and Conditions",
     )
