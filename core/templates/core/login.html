@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block title %}Login - Social Book{% endblock %}
 
 {% block content %}
@@ -86,6 +87,9 @@
                                             <div class="mt-4 d-flex align-items-center">
                                                 <h5 class="mb-0">Already have an account? 
                                                     <a href="{% url 'register' %}" class="text-primary">Create Account</a>
+                                                </h5>
+                                                <h5 class="mb-0">Save time! Log in instantly with your social account:  
+                                                    <a href="{% provider_login_url 'google' %}" class="text-primary">Login with Google</a>
                                                 </h5>
                                                 <div class="ml-auto">
                                                     <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg" type="submit">

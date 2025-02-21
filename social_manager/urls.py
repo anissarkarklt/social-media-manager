@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('core.urls')),
     path('',include('social_api.urls')),
+    path('accounts/', include('allauth.urls')),  # Adds login, logout, social login URLs    
 ]
